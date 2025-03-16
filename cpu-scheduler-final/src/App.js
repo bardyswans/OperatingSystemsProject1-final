@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import { FIFO } from "./algorithms/FIFO";
 
-function App() {
+export default function App() {
+  const [results, setResults] = useState([]);
+
+  const handleRunAlgorithm = (numProcesses) => {
+    let processes = [];
+
+    for (let i = 0; i < numProcesses; i++) {
+      processes.push({
+        id: i + 1,
+        arrivalTime: i,
+        burstTime: Math.floor(Math.random() * 10) + 1,
+      });
+    }
+
+    console.log("Generated Processes:", processes);
+    let result = FIFO(processes);
+    console.log("FIFO Output:", result);
+    setResults(result);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>FIFO CPU Scheduling Simulator</h1>
+      <ProcessInput onRunAlgorithm={handleRunAlgorithm} />
+      <ResultsTable results={results} />
+      <ResultsChart results={results} />
     </div>
   );
 }
-
-export default App;
