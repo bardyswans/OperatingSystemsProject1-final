@@ -1,7 +1,7 @@
 export function FIFO(processes) {
     let sortedProcesses = [...processes].sort((a, b) => {
       if (a.arrivalTime === b.arrivalTime) {
-        return a.id - b.id; // ✅ Ensures FIFO order when arrival times are the same
+        return a.id - b.id; 
       }
       return a.arrivalTime - b.arrivalTime;
     });
@@ -16,7 +16,7 @@ export function FIFO(processes) {
       let turnaroundTime = completionTime - process.arrivalTime;
   
       result.push({
-        id: process.id, // ✅ Now FIFO order is guaranteed
+        id: process.id, 
         arrivalTime: process.arrivalTime,
         startTime: startTime,
         completionTime: completionTime,
