@@ -5,22 +5,32 @@ import ResultsChart from "./components/ResultsChart";
 import { FIFO } from "./algorithms/FIFO";
 import { SJF } from "./algorithms/SJF";
 import { STCF } from "./algorithms/STCF";
-import { RR } from "./algorithms/RR";
+import { MLFQ } from "./algorithms/MLFQ";
+import { RR } from "./algorithms/RR";  
 
 export default function App() {
   const [results, setResults] = useState([]);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState("FIFO");
-  const [timeQuantum, setTimeQuantum] = useState(2);
-
+  const [timeQuantum, setTimeQuantum] = useState(2); 
   const handleRunAlgorithm = (numProcesses) => {
     let processes = [];
 
-    for (let i = 0; i < numProcesses; i++) {
-      processes.push({
-        id: i + 1,
-        arrivalTime: Math.floor(Math.random() * 10),
-        burstTime: Math.floor(Math.random() * 10) + 1,
-      });
+    if (selectedAlgorithm === "FIFO") {
+      for (let i = 0; i < numProcesses; i++) {
+        processes.push({
+          id: i + 1,
+          arrivalTime: i,
+          burstTime: Math.floor(Math.random() * 10) + 1,
+        });
+      }
+    } else {
+      for (let i = 0; i < numProcesses; i++) {
+        processes.push({
+          id: i + 1,
+          arrivalTime: Math.floor(Math.random() * 10),
+          burstTime: Math.floor(Math.random() * 10) + 1,
+        });
+      }
     }
 
     console.log("Generated Processes:", processes);
@@ -36,8 +46,11 @@ export default function App() {
       case "STCF":
         result = STCF(processes);
         break;
+      case "MLFQ":
+        result = MLFQ(processes);
+        break;
       case "RR":
-        result = RR(processes, timeQuantum);
+        result = RR(processes, timeQuantum);  
         break;
       default:
         result = [];
@@ -58,9 +71,11 @@ export default function App() {
         <option value="FIFO">FIFO</option>
         <option value="SJF">SJF</option>
         <option value="STCF">STCF</option>
-        <option value="RR">Round Robin</option>
+        <option value="MLFQ">MLFQ</option>
+        <option value="RR">Round Robin</option>  {/* Add RR option */}
       </select>
 
+      {/* Show Time Quantum input when RR is selected */}
       {selectedAlgorithm === "RR" && (
         <div>
           <label>Time Quantum: </label>
